@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href='https://fonts.googleapis.com/css?family=Lato:400,700,300' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </head>
 
 <title>LED Control</title>
@@ -13,7 +14,7 @@
 	<h2>Basic Controls</h2>
 		<div id="basic_controls">
 			<button type="button" id="on">Lights on!</button>
-			<button type="button" id="off" onclick="off()">Lights off!</button>
+			<button type="button" id="off">Lights off!</button>
 		</div>
 
 	<h2>Solid Colors</h2>
@@ -35,5 +36,5 @@
 </body>
 
 <script src="runTerminalCommand.js"></script>
-html
+</html>
 </>

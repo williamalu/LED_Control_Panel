@@ -1,19 +1,26 @@
-var xhttp;
+$(document).ready(function(){	
+	$('#off').click(function(){
+                $.post('sendTerminalCommand.php',{data: "0"},function(response){
+                });
+	});
 
-if (window.XMLHttpRequest) {
-	//code for modern browsers
-	xhttp = new XMLHttpRequest();
-}
-else {
-	//code to support IE6, IE5
-	xhttp = new ActiveXObject("Microsoft.XMLHTTP")
-}
+	$('#on').click(function(){
+                $.post('sendTerminalCommand.php',{data: "1"},function(response){
+                });
+	});
 
-var on = document.getElementById("on");
-var off = document.getElementById("off");
+	$('#red').click(function(){
+                $.post('sendTerminalCommand.php',{data: "2"},function(response){
+                });
+	});
 
-on.onclick = function() {turnOn()};
+	$('#green').click(function(){
+                $.post('sendTerminalCommand.php',{data: "3"},function(response){
+                });
+	});
 
-function turnOn() {
-	request.open( "GET", "sendTerminalCommand.php?switchCase=" + switchCase, true);
-}
+	$('#blue').click(function(){
+                $.post('sendTerminalCommand.php',{data: "4"},function(response){
+                });
+	});
+});
