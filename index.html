@@ -10,6 +10,13 @@
 <body>
 
 	<h1>LED Control</h1>
+
+	<h2>Who Are You?</h2>
+		<div id="who_are_you">
+			<button type="button" id="shane">The Swagmaster</button>
+			<button type="button" id="william">The Turtle</button>
+			<button type="button" id="both_people">The Shillium Ku</button>
+		</div>
 	
 	<h2>Basic Controls</h2>
 		<div id="basic_controls">
