@@ -1,4 +1,19 @@
-$(document).ready(function(){	
+$(document).ready(function(){
+	$('#both_people').click(function(){
+                $.post('sendTerminalCommand.php',{data: "0"},function(response){
+                });
+	});
+
+	$('#shane').click(function(){
+                $.post('sendTerminalCommand.php',{data: "1"},function(response){
+                });
+	});
+
+	$('#william').click(function(){
+                $.post('sendTerminalCommand.php',{data: "2"},function(response){
+                });
+	});
+	
 	$('#off').click(function(){
                 $.post('sendTerminalCommand.php',{data: "a"},function(response){
                 });
@@ -25,27 +40,27 @@ $(document).ready(function(){
 	});
 
 	$('#rainbow').click(function(){
-                $.post('sendTerminalCommand.php',{data: "5"},function(response){
+                $.post('sendTerminalCommand.php',{data: "f"},function(response){
                 });
 	});
 
 	$('#redChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "6"},function(response){
+                $.post('sendTerminalCommand.php',{data: "g"},function(response){
                 });
 	});
 
 	$('#greenChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "7"},function(response){
+                $.post('sendTerminalCommand.php',{data: "h"},function(response){
                 });
 	});
 
 	$('#blueChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "8"},function(response){
+                $.post('sendTerminalCommand.php',{data: "i"},function(response){
                 });
 	});
 
-	$('#rainbowChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "9"},function(response){
+	$('#random').click(function(){
+                $.post('sendTerminalCommand.php',{data: "j"},function(response){
                 });
 	});
 });

@@ -87,25 +87,40 @@ void rainbowFull(String strips, uint8_t wait) {
 }
 
 //Theatre-style crawling lights.
-void theaterChase(uint32_t c, uint8_t wait) {
+void theaterChase(String strips, uint32_t c, uint8_t wait) {
   for (int j=0; j<10; j++) {  //do 10 cycles of chasing
     for (int q=0; q < 3; q++) {
       for (int i=0; i < stripS.numPixels(); i=i+3) {
-        stripS.setPixelColor(i+q, c);    //turn every third pixel on
+        if (strips.indexOf(S) != -1) {
+          stripS.setPixelColor(i+q, c);    //turn every third pixel on
+        }
+        if (strips.indexOf(W) != -1) {
+          stripW.setPixelColor(i+q, c);    //turn every third pixel on
+        }
       }
-      stripS.show();
+      if (strips.indexOf(S) != -1) {
+          stripS.show();
+      }
+      if (strips.indexOf(W) != -1) {
+          stripW.show();
+      }
 
       delay(wait);
 
       for (int i=0; i < stripS.numPixels(); i=i+3) {
-        stripS.setPixelColor(i+q, 0);        //turn every third pixel off
+        if (strips.indexOf(S) != -1) {
+          stripS.setPixelColor(i+q, 0);    //turn every third pixel off
+        }
+        if (strips.indexOf(W) != -1) {
+          stripW.setPixelColor(i+q, 0);    //turn every third pixel off
+        }
       }
     }
   }
 }
 
 //Theatre-style crawling lights with rainbow effect
-void theaterChaseRainbow(uint8_t wait) {
+void theaterChaseRainbow(String strips, uint8_t wait) {
   for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
     for (int q=0; q < 3; q++) {
       for (int i=0; i < stripS.numPixels(); i=i+3) {

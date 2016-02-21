@@ -70,26 +70,25 @@ void loop() {
       colorWipe(strip, stripS.Color(0, 0, 255), 0);
       currentCode = stopCode;
       break;
-//    case '5': // Rainbow
-//      rainbowFull(100);
-//      break;
-//    case '6': // Red Chase
-//      theaterChase(stripS.Color(255, 0, 0), 100);
-//      break;
-//    case '7': // Green Chase
-//      theaterChase(stripS.Color(0, 255, 0), 100);
-//      break;
-//    case '8': // Blue Chase
-//      theaterChase(stripS.Color(0, 0, 255), 100);
-//      break;
-    //case '9': //Rainbow Chase
-      //randomRandom(100);
-      //rainbow(5);
-      //currentCode = stopCode;
-//      break;
+    case 'f': // Rainbow
+      rainbowFull(strip, 100);
+      break;
+    case 'g': // Red Chase
+      theaterChase(strip, stripS.Color(255, 0, 0), 100);
+      break;
+    case 'h': // Green Chase
+      theaterChase(strip, stripS.Color(0, 255, 0), 100);
+      break;
+    case 'i': // Blue Chase
+      theaterChase(strip, stripS.Color(0, 0, 255), 100);
+      break;
+    case 'j': //Random color fil
+      randomRandom(strip, 100);
+      currentCode = stopCode;
+      break;
     case '999':
       break;
       
-    //previousCode = currentCode;
+    previousCode = currentCode;
   }
 }
