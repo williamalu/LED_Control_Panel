@@ -1,44 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>LED Control</title>
+	<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">\
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="custom.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Lato:400,700,300' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </head>
-
-<title>LED Control</title>
 <body>
 
-	<h1>LED Control</h1>
-
-	<h2>Who Are You?</h2>
-		<div id="who_are_you">
-			<button type="button" id="shane">The Swagmaster</button>
-			<button type="button" id="william">The Turtle</button>
-			<button type="button" id="both_people">The Shillium Ku</button>
-		</div>
-	
-	<h2>Basic Controls</h2>
-		<div id="basic_controls">
-			<button type="button" id="on">Lights on!</button>
-			<button type="button" id="off">Lights off!</button>
+	<div class="container-fluid">
+		<div class="row top-buffer">
+			<div class="col-sm-12 text-center">
+				<h1>LED Control</h1>
+			</div>
 		</div>
 
-	<h2>Solid Colors</h2>
-		<div id="solid_colors">
-			<button type="button" id="red">Red</button>
-			<button type="button" id="green">Green</button>
-			<button type="button" id="blue">Blue</button>
+		<div class="row top-buffer text-center">
+			<h2>Who Are You?</h2>
+				<div class="top-buffer">
+					<button type="button" id="shane" class="btn btn-default">The Swagmaster</button>
+					<button type="button" id="william" class="btn btn-default">The Turtle</button>
+					<button type="button" id="both_people" class="btn btn-default">The Shillium Ku</button>
+				</div>
 		</div>
 
-	<h2>Basic Patterns</h2>
-		<div id="basic_patterns">
-			<button type="button" id="rainbow">Rainbow</button>
-			<button type="button" id="redChase">Red Chase</button>
-			<button type="button" id="greenChase">Green Chase</button>
-			<button type="button" id="blueChase">Blue Chase</button>
-			<button type="button" id="rainbowChase">Rainbow Chase</button>
+		<div class="row top-buffer text-center">
+			<h2>Basic Controls</h2>
+				<div class="col-sm-12">
+					<div class="top-buffer">
+						<button type="button" id="on" class="btn btn-default">Lights on!</button>
+						<button type="button" id="off" class="btn btn-default">Lights off!</button>
+					</div>
+				</div>
 		</div>
+
+		<div class="row top-buffer text-center">
+			<h2>Solid Colors</h2>
+				<div class="col-sm-12">
+					<div class="top-buffer">
+						<button type="button" id="red" class="btn btn-default">Red</button>
+						<button type="button" id="green" class="btn btn-default">Green</button>
+						<button type="button" id="blue" class="btn btn-default">Blue</button>
+					</div>
+				</div>
+		</div>
+
+		<div class="row top-buffer text-center">
+			<h2>Basic Patterns</h2>
+				<div class="col-sm-12">
+					<div class="top-buffer">
+						<button type="button" id="rainbow" class="btn btn-default">Rainbow</button>
+						<button type="button" id="redChase" class="btn btn-default">Red Chase</button>
+						<button type="button" id="greenChase" class="btn btn-default">Green Chase</button>
+						<button type="button" id="blueChase" class="btn btn-default">Blue Chase</button>
+						<button type="button" id="rainbowChase" class="btn btn-default">Rainbow Chase</button>
+					</div>
+				</div>
+		</div>
+	</div>
 
 </body>
 
