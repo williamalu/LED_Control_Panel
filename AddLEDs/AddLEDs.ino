@@ -86,6 +86,10 @@ void loop() {
       randomRandom(strip, 100);
       currentCode = stopCode;
       break;
+    case 'z': //Notification
+      notify(S, stripS.Color(255, 0, 0), 5);
+      currentCode = stopCode;
+      break;
     case '999':
       break;
       

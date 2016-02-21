@@ -1,5 +1,17 @@
 // Functions file.
 
+void notify(String strips, uint32_t color, uint8_t numFlashes) {
+  for (int i=0; i<numFlashes; i++) {
+    for (int j=stripS.numPixels()-20; j<stripS.numPixels(); j++) {
+      stripS.setPixelColor(j, color);
+    }
+    stripS.show();
+    delay(200);
+    setStrip(strips, stripS.Color(0, 0, 0));
+    delay(200);
+  }
+}
+
 void randomRandom(String strips, uint8_t wait) {
   int selectedPixel;
   uint32_t color = stripS.Color(random(0, 256), random(0, 256), random(0, 256));
