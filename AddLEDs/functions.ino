@@ -1,5 +1,33 @@
 // Functions file.
 
+// Set the window-side half of the strip to the given color
+void setHalfStrip(String strips, uint32_t color) {
+  for(int pixelNum=0; pixelNum<stripS.numPixels(); pixelNum++) {
+    if (strips.indexOf(S) != -1) {
+      if (pixelNum >= stripS.numPixels()/2) {
+        stripS.setPixelColor(pixelNum, color);
+      }
+      else {
+        stripS.setPixelColor(pixelNum, stripS.Color(0, 0, 0));
+      }
+    }
+    if (strips.indexOf(W) != -1) {
+      if (pixelNum >= stripS.numPixels()/2) {
+        stripW.setPixelColor(pixelNum, color);
+      }
+      else {
+        stripW.setPixelColor(pixelNum, stripS.Color(0, 0, 0));
+      }
+    }
+  }
+  if (strips.indexOf(S) != -1) {
+      stripS.show();
+  }
+  if (strips.indexOf(W) != -1) {
+      stripW.show();
+  }
+}
+
 void notify(String strips, uint32_t color, uint8_t numFlashes) {
   for (int i=0; i<numFlashes; i++) {
     for (int j=stripS.numPixels()-20; j<stripS.numPixels(); j++) {
@@ -12,22 +40,34 @@ void notify(String strips, uint32_t color, uint8_t numFlashes) {
   }
 }
 
-void randomRandom(String strips, uint8_t wait) {
+void randomRandom(byte inputCode, String strips, uint8_t wait) {
   int selectedPixel;
-  uint32_t color = stripS.Color(random(0, 256), random(0, 256), random(0, 256));
+  //uint32_t color = stripS.Color(random(0, 256), random(0, 256), random(0, 256));
+  uint32_t color = Wheel(random(0, 256));
   setStrip(strips, stripS.Color(0, 0, 0));
+  unsigned long previousTime = 0;
+  unsigned long currentTime = millis();
 
-  for (int i=0; i<stripS.numPixels(); i++) {
-    selectedPixel = random(0, stripS.numPixels());
-    if (strips.indexOf(S) != -1) {
-      stripS.setPixelColor(selectedPixel, color);
-      stripS.show();
+  for (int i=0; i<stripS.numPixels();) {
+    currentTime = millis();
+    if (currentTime - previousTime >= wait) {
+      previousTime = currentTime;
+      selectedPixel = random(0, stripS.numPixels());
+      if (strips.indexOf(S) != -1) {
+        stripS.setPixelColor(selectedPixel, color);
+        stripS.show();
+      }
+      if (strips.indexOf(W) != -1) {
+        stripW.setPixelColor(selectedPixel, color);
+        stripW.show();
+      }
+      i++;
     }
-    if (strips.indexOf(W) != -1) {
-      stripW.setPixelColor(selectedPixel, color);
-      stripW.show();
+    // Break if a new command is sent
+    readSerial();
+    if (currentCode != inputCode) {
+      break;
     }
-    delay(wait);
   }
 }
 
@@ -65,15 +105,24 @@ void colorWipe(String strips, uint32_t c, uint8_t wait) {
   }
 }
 
-void rainbow(uint8_t wait) {
+void rainbow(byte inputCode, uint8_t wait) {
   uint16_t i, j;
+  unsigned long previousTime = 0;
+  unsigned long currentTime = millis();
 
-  for(j=0; j<256; j++) {
-    for(i=0; i<stripS.numPixels(); i++) {
-      stripS.setPixelColor(i, Wheel((i+j) & 255));
+  for(j=0; j<256;) {
+    if (currentTime - previousTime >= wait) {
+      for(i=0; i<stripS.numPixels(); i++) {
+        stripS.setPixelColor(i, Wheel((i+j) & 255));
+      }
+      stripS.show();
+      j++;
     }
-    stripS.show();
-    delay(wait);
+    // Break if a new command is sent
+    readSerial();
+    if (currentCode != inputCode) {
+      break;
+    }
   }
 }
 
@@ -90,17 +139,29 @@ void rainbowCycle(uint8_t wait) {
   }
 }
 
-void rainbowFull(String strips, uint8_t wait) {
+void rainbowFull(byte inputCode, String strips, uint8_t wait) {
   uint16_t i;
-  for (i=0; i<256; i++) {
-    setStrip(strips, Wheel(i));
-    delay(wait);
+  unsigned long previousTime = 0;
+  unsigned long currentTime = millis();
+  
+  for (i=0; i<256;) {
+    currentTime = millis();
+    if (currentTime - previousTime >= wait) {
+      previousTime = currentTime;
+      setStrip(strips, Wheel(i));
+      i++;
+    }
+    // Break if a new command is sent
+    readSerial();
+    if (currentCode != inputCode) {
+      break;
+    }
   }
+  
 }
 
 //Theatre-style crawling lights.
 void theaterChase(String strips, uint32_t c, uint8_t wait) {
-  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
     for (int q=0; q < 3; q++) {
       for (int i=0; i < stripS.numPixels(); i=i+3) {
         if (strips.indexOf(S) != -1) {
@@ -128,7 +189,6 @@ void theaterChase(String strips, uint32_t c, uint8_t wait) {
         }
       }
     }
-  }
 }
 
 //Theatre-style crawling lights with rainbow effect
@@ -162,4 +222,12 @@ uint32_t Wheel(byte WheelPos) {
   }
   WheelPos -= 170;
   return stripS.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+
+// Reads serial for a new command
+void readSerial() {
+  if (Serial.available()) {
+    currentCode = Serial.read();
+    Serial.println(currentCode);
+  }
 }

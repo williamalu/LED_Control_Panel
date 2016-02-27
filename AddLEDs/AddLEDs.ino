@@ -8,17 +8,19 @@
 #define pinS 7
 #define pinW 6
 
+// Create a strip object for both LED strips
 Adafruit_NeoPixel stripS = Adafruit_NeoPixel(150, pinS, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel stripW = Adafruit_NeoPixel(150, pinW, NEO_GRB + NEO_KHZ800);
 
+// Default lights to off
 byte currentCode = 0;
 byte stopCode = 999;
 byte previousCode = 999;
 
+// Create variables for which LED strip is being controlled
 String S = "S";
 String W = "W";
 String SW = "SW";
-
 String strip = "SW";
 
 void setup() {
@@ -32,11 +34,10 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available()) {
-    currentCode = Serial.read();
-    Serial.println(currentCode);
-  }
+  // Read serial for new command
+  readSerial();
   
+  // Set the lights to the given state
   switch(currentCode) {
     case '0': // Gain control of both strips
       strip = "SW";
@@ -55,7 +56,8 @@ void loop() {
       currentCode = stopCode;
       break;
     case 'b': // White
-      colorWipe(strip, stripS.Color(150, 150, 75), 0);
+      //colorWipe(strip, stripS.Color(150, 150, 75), 0);
+      setHalfStrip(strip, stripS.Color(150, 150, 75));
       currentCode = stopCode;
       break;
     case 'c': // White
@@ -71,7 +73,7 @@ void loop() {
       currentCode = stopCode;
       break;
     case 'f': // Rainbow
-      rainbowFull(strip, 100);
+      rainbowFull(currentCode, strip, 100);
       break;
     case 'g': // Red Chase
       theaterChase(strip, stripS.Color(255, 0, 0), 100);
@@ -82,14 +84,13 @@ void loop() {
     case 'i': // Blue Chase
       theaterChase(strip, stripS.Color(0, 0, 255), 100);
       break;
-    case 'j': //Random color fil
-      randomRandom(strip, 100);
-      currentCode = stopCode;
+    case 'j': //Random color fill
+      randomRandom(currentCode, strip, 100);
       break;
-    case 'z': //Notification
-      notify(S, stripS.Color(255, 0, 0), 5);
-      currentCode = stopCode;
-      break;
+//    case 'z': //Notification
+//      notify(S, stripS.Color(255, 0, 0), 5);
+//      currentCode = stopCode;
+//      break;
     case '999':
       break;
       

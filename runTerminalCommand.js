@@ -1,17 +1,17 @@
 $(document).ready(function(){
 
-	var websocket;
+	//var websocket;
 	//var apiKey = 'o.MzWdvlC42NMaUlyr8rBnTqaCert5frFr';
-	var apiKey = 'o.WdMp1Mnur5DnjRY00R8gW9la6dMB7Wai';
-	websocket = new WebSocket('wss://stream.pushbullet.com/websocket/' + apiKey);
+	//var apiKey = 'o.WdMp1Mnur5DnjRY00R8gW9la6dMB7Wai';
+	//websocket = new WebSocket('wss://stream.pushbullet.com/websocket/' + apiKey);
 	
-	websocket.onmessage = function(e) {
-		//console.log('e.data: ' + JSON.stringify(e.data));
-		//console.log(JSON.parse(e.data).push.type);
-		if (JSON.parse(e.data).push.type == "sms_changed") {
-			$.post('sendTerminalCommand.php',{data: "z"});
-		}
-	}
+	//websocket.onmessage = function(e) {
+	//	//console.log('e.data: ' + JSON.stringify(e.data));
+	//	//console.log(JSON.parse(e.data).push.type);
+	//	if (JSON.parse(e.data).push.type == "sms_changed") {
+	//		$.post('sendTerminalCommand.php',{data: "z"});
+	//	}
+	//}
 
 	$('#both_people').click(function(){
                 $.post('sendTerminalCommand.php',{data: "0"});
