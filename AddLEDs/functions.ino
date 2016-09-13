@@ -1,66 +1,46 @@
 // Functions file.
 
-// Set the window-side half of the strip to the given color
-void setHalfStrip(String strips, uint32_t color) {
-  for(int pixelNum=0; pixelNum<stripS.numPixels(); pixelNum++) {
-    if (strips.indexOf(S) != -1) {
-      if (pixelNum >= stripS.numPixels()/2) {
-        stripS.setPixelColor(pixelNum, color);
-      }
-      else {
-        stripS.setPixelColor(pixelNum, stripS.Color(0, 0, 0));
-      }
+// Set every third LED the given color
+void setEveryThird(uint32_t c, uint8_t wait) {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    if (i%3 == 0) {
+      strip.setPixelColor(i, c);
     }
-    if (strips.indexOf(W) != -1) {
-      if (pixelNum >= stripS.numPixels()/2) {
-        stripW.setPixelColor(pixelNum, color);
-      }
-      else {
-        stripW.setPixelColor(pixelNum, stripS.Color(0, 0, 0));
-      }
+    else {
+      strip.setPixelColor(i, strip.Color(0, 0, 0));
     }
-  }
-  if (strips.indexOf(S) != -1) {
-      stripS.show();
-  }
-  if (strips.indexOf(W) != -1) {
-      stripW.show();
+    strip.show();
+    
+    delay(wait);
   }
 }
 
-void notify(String strips, uint32_t color, uint8_t numFlashes) {
+void notify(uint32_t color, uint8_t numFlashes) {
   for (int i=0; i<numFlashes; i++) {
-    for (int j=stripS.numPixels()-20; j<stripS.numPixels(); j++) {
-      stripS.setPixelColor(j, color);
+    for (int j=strip.numPixels()-20; j<strip.numPixels(); j++) {
+      strip.setPixelColor(j, color);
     }
-    stripS.show();
+    strip.show();
     delay(200);
-    setStrip(strips, stripS.Color(0, 0, 0));
+    setStrip(strip.Color(0, 0, 0));
     delay(200);
   }
 }
 
-void randomRandom(byte inputCode, String strips, uint8_t wait) {
+void randomRandom(byte inputCode, uint8_t wait) {
   int selectedPixel;
-  //uint32_t color = stripS.Color(random(0, 256), random(0, 256), random(0, 256));
   uint32_t color = Wheel(random(0, 256));
-  setStrip(strips, stripS.Color(0, 0, 0));
+  setStrip(strip.Color(0, 0, 0));
   unsigned long previousTime = 0;
   unsigned long currentTime = millis();
 
-  for (int i=0; i<stripS.numPixels();) {
+  for (int i=0; i<strip.numPixels();) {
     currentTime = millis();
     if (currentTime - previousTime >= wait) {
       previousTime = currentTime;
-      selectedPixel = random(0, stripS.numPixels());
-      if (strips.indexOf(S) != -1) {
-        stripS.setPixelColor(selectedPixel, color);
-        stripS.show();
-      }
-      if (strips.indexOf(W) != -1) {
-        stripW.setPixelColor(selectedPixel, color);
-        stripW.show();
-      }
+      selectedPixel = random(0, strip.numPixels());
+      strip.setPixelColor(selectedPixel, color);
+      strip.show();
       i++;
     }
     // Break if a new command is sent
@@ -71,35 +51,19 @@ void randomRandom(byte inputCode, String strips, uint8_t wait) {
   }
 }
 
-// Set the entire stripS to a given color.
-void setStrip(String strips, uint32_t color) {
-  for(int pixelNum=0; pixelNum<stripS.numPixels(); pixelNum++) {
-    if (strips.indexOf(S) != -1) {
-      stripS.setPixelColor(pixelNum, color);
-    }
-    if (strips.indexOf(W) != -1) {
-      stripW.setPixelColor(pixelNum, color);
-    }
+// Set the entire strip to a given color.
+void setStrip(uint32_t color) {
+  for(int pixelNum=0; pixelNum<strip.numPixels(); pixelNum++) {
+    strip.setPixelColor(pixelNum, color);
   }
-  if (strips.indexOf(S) != -1) {
-      stripS.show();
-  }
-  if (strips.indexOf(W) != -1) {
-      stripW.show();
-  }
+  strip.show();
 }
 
-// Wipe the stripS with a given color.
-void colorWipe(String strips, uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<stripS.numPixels(); i++) {
-    if (strips.indexOf(S) != -1) {
-      stripS.setPixelColor(i, c);
-      stripS.show();
-    }
-    if (strips.indexOf(W) != -1) {
-      stripW.setPixelColor(i, c);
-      stripW.show();
-    }
+// Wipe the strip with a given color.
+void colorWipe(uint32_t c, uint8_t wait) {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, c);
+    strip.show();
     
     delay(wait);
   }
@@ -112,10 +76,10 @@ void rainbow(byte inputCode, uint8_t wait) {
 
   for(j=0; j<256;) {
     if (currentTime - previousTime >= wait) {
-      for(i=0; i<stripS.numPixels(); i++) {
-        stripS.setPixelColor(i, Wheel((i+j) & 255));
+      for(i=0; i<strip.numPixels(); i++) {
+        strip.setPixelColor(i, Wheel((i+j) & 255));
       }
-      stripS.show();
+      strip.show();
       j++;
     }
     // Break if a new command is sent
@@ -131,15 +95,16 @@ void rainbowCycle(uint8_t wait) {
   uint16_t i, j;
 
   for(j=0; j<256*5; j++) {
-    for(i=0; i< stripS.numPixels(); i++) {
-      stripS.setPixelColor(i, Wheel(((i * 256 / stripS.numPixels()) + j) & 255));
+    for(i=0; i< strip.numPixels(); i++) {
+      strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
     }
-    stripS.show();
+    strip.show();
     delay(wait);
   }
 }
 
-void rainbowFull(byte inputCode, String strips, uint8_t wait) {
+// The entire strip cycles through the rainbow
+void rainbowFull(byte inputCode, uint8_t wait) {
   uint16_t i;
   unsigned long previousTime = 0;
   unsigned long currentTime = millis();
@@ -148,7 +113,7 @@ void rainbowFull(byte inputCode, String strips, uint8_t wait) {
     currentTime = millis();
     if (currentTime - previousTime >= wait) {
       previousTime = currentTime;
-      setStrip(strips, Wheel(i));
+      setStrip(Wheel(i));
       i++;
     }
     // Break if a new command is sent
@@ -161,49 +126,34 @@ void rainbowFull(byte inputCode, String strips, uint8_t wait) {
 }
 
 //Theatre-style crawling lights.
-void theaterChase(String strips, uint32_t c, uint8_t wait) {
+void theaterChase(uint32_t c, uint8_t wait) {
     for (int q=0; q < 3; q++) {
-      for (int i=0; i < stripS.numPixels(); i=i+3) {
-        if (strips.indexOf(S) != -1) {
-          stripS.setPixelColor(i+q, c);    //turn every third pixel on
-        }
-        if (strips.indexOf(W) != -1) {
-          stripW.setPixelColor(i+q, c);    //turn every third pixel on
-        }
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, c);    //turn every third pixel on
       }
-      if (strips.indexOf(S) != -1) {
-          stripS.show();
-      }
-      if (strips.indexOf(W) != -1) {
-          stripW.show();
-      }
+      strip.show();
 
       delay(wait);
 
-      for (int i=0; i < stripS.numPixels(); i=i+3) {
-        if (strips.indexOf(S) != -1) {
-          stripS.setPixelColor(i+q, 0);    //turn every third pixel off
-        }
-        if (strips.indexOf(W) != -1) {
-          stripW.setPixelColor(i+q, 0);    //turn every third pixel off
-        }
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, 0);    //turn every third pixel off
       }
     }
 }
 
 //Theatre-style crawling lights with rainbow effect
-void theaterChaseRainbow(String strips, uint8_t wait) {
+void theaterChaseRainbow(uint8_t wait) {
   for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
     for (int q=0; q < 3; q++) {
-      for (int i=0; i < stripS.numPixels(); i=i+3) {
-        stripS.setPixelColor(i+q, Wheel( (i+j) % 255));    //turn every third pixel on
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, Wheel( (i+j) % 255));    //turn every third pixel on
       }
-      stripS.show();
+      strip.show();
 
       delay(wait);
 
-      for (int i=0; i < stripS.numPixels(); i=i+3) {
-        stripS.setPixelColor(i+q, 0);        //turn every third pixel off
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, 0);        //turn every third pixel off
       }
     }
   }
@@ -214,14 +164,14 @@ void theaterChaseRainbow(String strips, uint8_t wait) {
 uint32_t Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
   if(WheelPos < 85) {
-    return stripS.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
   }
   if(WheelPos < 170) {
     WheelPos -= 85;
-    return stripS.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
   WheelPos -= 170;
-  return stripS.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
 // Reads serial for a new command
