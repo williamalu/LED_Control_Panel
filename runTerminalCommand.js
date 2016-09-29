@@ -1,46 +1,52 @@
 $(document).ready(function(){
-	
-	$('#off').click(function(){
-                $.post('sendTerminalCommand.php',{data: "a"});
-	});
+		
+		$('#off').click(function(){
+        $.post('sendTerminalCommand.php',{data: "{0}"});
+		});
 
-	$('#on').click(function(){
-                $.post('sendTerminalCommand.php',{data: "b"});
-	});
+		$('#on').click(function(){
+        $.post('sendTerminalCommand.php',{data: "b"});
+		});
 
-	$('#red').click(function(){
-                $.post('sendTerminalCommand.php',{data: "c"});
-	});
+		$('#red').click(function(){
+        $.post('sendTerminalCommand.php',{data: "c"});
+		});
 
-	$('#green').click(function(){
-                $.post('sendTerminalCommand.php',{data: "d"});
-	});
+		$('#green').click(function(){
+        $.post('sendTerminalCommand.php',{data: "d"});
+		});
 
-	$('#blue').click(function(){
-                $.post('sendTerminalCommand.php',{data: "e"});
-	});
+		$('#blue').click(function(){
+        $.post('sendTerminalCommand.php',{data: "e"});
+		});
 
-	$('#fullRainbow').click(function(){
-                $.post('sendTerminalCommand.php',{data: "f"});
-	});
+		$('#fullRainbow').click(function(){
+        $.post('sendTerminalCommand.php',{data: "f"});
+		});
 
-        $('#rainbow').click(function(){
-        	$.post('sendTerminalCommand.php',{data: "g"});
-        });
+    $('#rainbow').click(function(){
+        $.post('sendTerminalCommand.php',{data: "g"});
+    });
 
-	$('#redChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "h"});
-	});
+		$('#redChase').click(function(){
+        $.post('sendTerminalCommand.php',{data: "h"});
+		});
 
-	$('#greenChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "i"});
-	});
+		$('#greenChase').click(function(){
+        $.post('sendTerminalCommand.php',{data: "i"});
+		});
 
-	$('#blueChase').click(function(){
-                $.post('sendTerminalCommand.php',{data: "j"});
-	});
+		$('#blueChase').click(function(){
+        $.post('sendTerminalCommand.php',{data: "j"});
+		});
 
-	$('#random').click(function(){
-                $.post('sendTerminalCommand.php',{data: "k"});
-	});
+		$('#random').click(function(){
+        $.post('sendTerminalCommand.php',{data: "k"});
+		});
+
+		$(document).keypress(function(e) {
+				if(e.which == 13) {
+						console.log("hooray!");
+				}
+		});
 });
