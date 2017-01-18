@@ -1,5 +1,4 @@
-$(document).ready(function(){
-	
+$(document).ready(function(){	
 	$('#off').click(function(){
                 $.post('sendTerminalCommand.php',{data: "a"});
 	});
