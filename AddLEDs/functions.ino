@@ -1,5 +1,37 @@
 // Functions file.
 
+void checkForClap(boolean lastOffOrWhite) {
+  currentTime = millis();
+  boolean loudNoise = digitalRead(microphonePin);
+  if (loudNoise) {
+    while (currentTime - previousTime <= 500) {
+      loudNoise = digitalRead(microphonePin);
+      if (loudNoise) {
+        numRecentClaps ++;
+        Serial.println(numRecentClaps);
+      }
+      currentTime = millis();
+    }
+    if (numRecentClaps >= recentClapsLowThreshold && numRecentClaps <= recentClapsHighThreshold) {
+      if (!lastOffOrWhite) {
+        currentCode = whiteCode;
+      }
+      else {
+        currentCode = offCode;
+      }
+    }
+  }
+  numRecentClaps = 0;
+  previousTime = currentTime;
+//  if (currentTime - previousTime >= 500) {
+//    if (numRecentClaps > 0) {
+//      numRecentClaps --;
+//      Serial.println(numRecentClaps);
+//    }
+//    previousTime = millis();
+//  }
+}
+
 // Set every third LED the given color
 void setEveryThird(uint32_t c, uint8_t wait) {
   for(uint16_t i=0; i<strip.numPixels(); i++) {
@@ -15,26 +47,13 @@ void setEveryThird(uint32_t c, uint8_t wait) {
   }
 }
 
-void notify(uint32_t color, uint8_t numFlashes) {
-  for (int i=0; i<numFlashes; i++) {
-    for (int j=strip.numPixels()-20; j<strip.numPixels(); j++) {
-      strip.setPixelColor(j, color);
-    }
-    strip.show();
-    delay(200);
-    setStrip(strip.Color(0, 0, 0));
-    delay(200);
-  }
-}
-
 void randomRandom(byte inputCode, uint8_t wait) {
   int selectedPixel;
   uint32_t color = Wheel(random(0, 256));
-  setStrip(strip.Color(0, 0, 0));
   unsigned long previousTime = 0;
   unsigned long currentTime = millis();
 
-  for (int i=0; i<strip.numPixels();) {
+  for (int i=0; i<strip.numPixels()/2;) {
     currentTime = millis();
     if (currentTime - previousTime >= wait) {
       previousTime = currentTime;
@@ -67,6 +86,25 @@ void colorWipe(uint32_t c, uint8_t wait) {
     
     delay(wait);
   }
+}
+
+// Fade the strip from on to off
+void fadeOnToOff(byte inputCode, uint32_t wait) {
+  float initialDim = .6;
+  byte r = 255*initialDim;
+  byte g = 197*initialDim;
+  byte b = 143*initialDim;
+  for(float i=1.0; i>0.05; i-=.001) {
+    setStrip(strip.Color(r*i, g*i, b*i));
+    delay(wait);
+    
+    // Break if a new command is sent
+    readSerial();
+    if (currentCode != inputCode) {
+      break;
+    }
+  }
+  setStrip(strip.Color(0, 0, 0));
 }
 
 void rainbow(byte inputCode, uint8_t wait) {
@@ -159,6 +197,29 @@ void theaterChaseRainbow(uint8_t wait) {
   }
 }
 
+void pixelWar(byte inputCode) {
+  uint32_t battleFront = strip.numPixels()/2;
+  while((battleFront > 0) && (battleFront < strip.numPixels())) {
+    for (int i=0; i<strip.numPixels(); i++) {
+      if (i < battleFront) {
+        strip.setPixelColor(i, strip.Color(255, 0, 0));
+      }
+      else {
+        strip.setPixelColor(i, strip.Color(0, 0, 255));
+      }
+    }
+    strip.show();
+    delay(50);
+    battleFront += random(-10, 10);
+    
+    // Break if a new command is sent
+    readSerial();
+    if (currentCode != inputCode) {
+      break;
+    }
+  }
+}
+
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos) {
@@ -177,7 +238,14 @@ uint32_t Wheel(byte WheelPos) {
 // Reads serial for a new command
 void readSerial() {
   if (Serial.available()) {
-    currentCode = Serial.read();
+    byte newRead;
+    String newCode;
+    while(Serial.available() > 0) {
+      newRead = Serial.read() - 97;
+      newCode += String(newRead);
+      delay(5);
+    }
+    currentCode = newCode.toInt();
     Serial.println(currentCode);
   }
 }

@@ -43,4 +43,8 @@ $(document).ready(function(){
 	$('#random').click(function(){
                 $.post('sendTerminalCommand.php',{data: "k"});
 	});
+
+        $('#fadeOnToOff').click(function(){
+                $.post('sendTerminalCommand.php',{data: "l"});
+	});
 });
