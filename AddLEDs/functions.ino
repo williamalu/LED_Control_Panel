@@ -220,6 +220,23 @@ void pixelWar(byte inputCode) {
   }
 }
 
+
+void twinkle() {
+  int brightness;
+  for (int i=0; i<strip.numPixels(); i++) {
+    brightness = random(150, 200);
+    strip.setPixelColor(i, strip.Color(brightness, brightness, brightness));
+    strip.show();
+    delay(10);
+    
+    // Break if a new command is sent
+    readSerial();
+    if (currentCode != twinkleCode) {
+      break;
+    }
+  }
+}
+
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos) {

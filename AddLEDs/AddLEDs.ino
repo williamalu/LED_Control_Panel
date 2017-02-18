@@ -9,7 +9,7 @@ const byte lightsPin = 6;
 const byte microphonePin = 2;
 
 // Create a strip object for both LED strips
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(530, lightsPin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(510, lightsPin, NEO_GRB + NEO_KHZ800);
 
 // Define light modes
 const byte offCode = 0;
@@ -25,6 +25,7 @@ const byte blueChaseCode = 9;
 const byte randomRandomCode = 10;
 const byte nightTimeCode = 11;
 const byte pixelWarCode = 12;
+const byte twinkleCode = 13;
 const byte checkForClapCode = 254;
 const byte stopCode = 255;
 
@@ -103,6 +104,9 @@ void loop() {
   case pixelWarCode: //Pixel war
     pixelWar(currentCode);
     currentCode = stopCode;
+    break;
+  case twinkleCode:
+    twinkle();
     break;
   case checkForClapCode: // Listen for clapping noise
     checkForClap(lastOffOrWhite);
