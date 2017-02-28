@@ -46,4 +46,12 @@ $(document).ready(function(){
         $('#fadeOnToOff').click(function(){
                 $.post('sendTerminalCommand.php',{data: "l"});
 	});
+
+        $('#randomWar').click(function(){
+                $.post('sendTerminalCommand.php',{data: "m"});
+	});
+
+        $('#twinkle').click(function(){
+                $.post('sendTerminalCommand.php',{data: "n"});
+	});
 });
