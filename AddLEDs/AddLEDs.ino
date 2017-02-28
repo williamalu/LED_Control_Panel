@@ -20,7 +20,7 @@ const byte redChaseCode = 7;
 const byte greenChaseCode = 8;
 const byte blueChaseCode = 9;
 const byte randomRandomCode = 10;
-const byte nightTimeCode = 11;
+const byte fadeOnToOffCode = 11;
 const byte pixelWarCode = 12;
 const byte twinkleCode = 13;
 const byte checkForClapCode = 254;
@@ -81,13 +81,11 @@ void loop() {
   case randomRandomCode: //Random color fill
     randomRandom(currentCode, 10);
     break;
-  case nightTimeCode: //Fade from on to off
+  case fadeOnToOffCode: //Fade from on to off
     fadeOnToOff(currentCode, 50);
-    currentCode = stopCode;
     break;
   case pixelWarCode: //Pixel war
     pixelWar(currentCode);
-    currentCode = stopCode;
     break;
   case twinkleCode:
     twinkle();

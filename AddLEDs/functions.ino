@@ -33,7 +33,7 @@ void randomRandom(byte inputCode, uint8_t wait) {
     // Break if a new command is sent
     readSerial();
     if (currentCode != inputCode) {
-      break;
+      return;
     }
   }
 }
@@ -69,10 +69,11 @@ void fadeOnToOff(byte inputCode, uint32_t wait) {
     // Break if a new command is sent
     readSerial();
     if (currentCode != inputCode) {
-      break;
+      return;
     }
   }
   setStrip(strip.Color(0, 0, 0));
+  currentCode = stopCode;
 }
 
 void rainbow(byte inputCode, uint8_t wait) {
@@ -91,7 +92,7 @@ void rainbow(byte inputCode, uint8_t wait) {
     // Break if a new command is sent
     readSerial();
     if (currentCode != inputCode) {
-      break;
+      return;
     }
   }
 }
@@ -125,7 +126,7 @@ void rainbowFull(byte inputCode, uint8_t wait) {
     // Break if a new command is sent
     readSerial();
     if (currentCode != inputCode) {
-      break;
+      return;
     }
   }
   
@@ -168,6 +169,7 @@ void theaterChaseRainbow(uint8_t wait) {
 void pixelWar(byte inputCode) {
   // Initialize a new random seed so the random numbers aren't always the same
   randomSeed(analogRead(0));
+  
   uint32_t battleFront = strip.numPixels()/2;
   while((battleFront > 0) && (battleFront < strip.numPixels())) {
     for (int i=0; i<strip.numPixels(); i++) {
@@ -185,12 +187,16 @@ void pixelWar(byte inputCode) {
     // Break if a new command is sent
     readSerial();
     if (currentCode != inputCode) {
-      break;
+      return;
     }
   }
+  currentCode = stopCode;
 }
 
 void twinkle() {
+  // Initialize a new random seed so the random numbers aren't always the same
+  randomSeed(analogRead(0));
+  
   int brightness;
   for (int i=0; i<strip.numPixels(); i++) {
     brightness = random(10, 100);
@@ -199,7 +205,7 @@ void twinkle() {
     // Break if a new command is sent
     readSerial();
     if (currentCode != twinkleCode) {
-      break;
+      return;
     }
   }
   strip.show();
