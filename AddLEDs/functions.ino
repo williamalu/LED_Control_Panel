@@ -1,36 +1,4 @@
-// Functions file.
-
-void checkForClap(boolean lastOffOrWhite) {
-  currentTime = millis();
-  boolean loudNoise = digitalRead(microphonePin);
-  if (loudNoise) {
-    while (currentTime - previousTime <= 500) {
-      loudNoise = digitalRead(microphonePin);
-      if (loudNoise) {
-        numRecentClaps ++;
-        Serial.println(numRecentClaps);
-      }
-      currentTime = millis();
-    }
-    if (numRecentClaps >= recentClapsLowThreshold && numRecentClaps <= recentClapsHighThreshold) {
-      if (!lastOffOrWhite) {
-        currentCode = whiteCode;
-      }
-      else {
-        currentCode = offCode;
-      }
-    }
-  }
-  numRecentClaps = 0;
-  previousTime = currentTime;
-//  if (currentTime - previousTime >= 500) {
-//    if (numRecentClaps > 0) {
-//      numRecentClaps --;
-//      Serial.println(numRecentClaps);
-//    }
-//    previousTime = millis();
-//  }
-}
+// Functions file
 
 // Set every third LED the given color
 void setEveryThird(uint32_t c, uint8_t wait) {
@@ -198,6 +166,8 @@ void theaterChaseRainbow(uint8_t wait) {
 }
 
 void pixelWar(byte inputCode) {
+  // Initialize a new random seed so the random numbers aren't always the same
+  randomSeed(analogRead(0));
   uint32_t battleFront = strip.numPixels()/2;
   while((battleFront > 0) && (battleFront < strip.numPixels())) {
     for (int i=0; i<strip.numPixels(); i++) {
@@ -220,14 +190,11 @@ void pixelWar(byte inputCode) {
   }
 }
 
-
 void twinkle() {
   int brightness;
   for (int i=0; i<strip.numPixels(); i++) {
-    brightness = random(150, 200);
+    brightness = random(10, 100);
     strip.setPixelColor(i, strip.Color(brightness, brightness, brightness));
-    strip.show();
-    delay(10);
     
     // Break if a new command is sent
     readSerial();
@@ -235,6 +202,8 @@ void twinkle() {
       break;
     }
   }
+  strip.show();
+  delay(50);
 }
 
 // Input a value 0 to 255 to get a color value.

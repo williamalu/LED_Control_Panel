@@ -1,9 +1,6 @@
 // Main file
 
 #include <Adafruit_NeoPixel.h>
-#ifdef __AVR__
-  #include <avr/power.h>
-#endif
 
 const byte lightsPin = 6;
 const byte microphonePin = 2;
@@ -33,15 +30,6 @@ const byte stopCode = 255;
 byte currentCode = 0;
 byte previousCode = stopCode;
 
-// Keep track of last on/off light state for clap-on clap-off
-boolean lastOffOrWhite = 0;
-byte delayAfterClap = 50;
-byte numRecentClaps = 0;
-byte recentClapsLowThreshold = 15;
-byte recentClapsHighThreshold = 35;
-unsigned long long currentTime = millis();
-unsigned long long previousTime = currentTime;
-
 void setup() {
   Serial.begin(9600);
   
@@ -57,15 +45,11 @@ void loop() {
   switch(currentCode) {
   case offCode: // Off
     setStrip(strip.Color(0, 0, 0));
-    lastOffOrWhite = 0;
-    currentCode = checkForClapCode;
-    delay(delayAfterClap);
+    currentCode = stopCode;
     break;
   case whiteCode: // White
     setStrip(strip.Color(255, 197, 143));
-    lastOffOrWhite = 1;
-    currentCode = checkForClapCode;
-    delay(delayAfterClap);
+    currentCode = stopCode;
     break;
   case redCode: // Red
     setStrip(strip.Color(255, 0, 0));
@@ -108,8 +92,6 @@ void loop() {
   case twinkleCode:
     twinkle();
     break;
-  case checkForClapCode: // Listen for clapping noise
-    checkForClap(lastOffOrWhite);
   case stopCode:
     break;
   }
