@@ -195,12 +195,16 @@ void pixelWar(byte inputCode) {
 
 void twinkle() {
   // Initialize a new random seed so the random numbers aren't always the same
-  randomSeed(analogRead(0));
+  //randomSeed(analogRead(0));
   
-  int brightness;
-  for (int i=0; i<strip.numPixels(); i++) {
-    brightness = random(10, 100);
-    strip.setPixelColor(i, strip.Color(brightness, brightness, brightness));
+  int min_brightness = random(0, 10);
+  int max_brightness = min_brightness + 90;
+  int rand_brightness;
+  int led_start = random(0, 9);
+  int led_increment = random(1, 10);
+  for (int i=led_start; i<strip.numPixels(); i+=led_increment) {
+    rand_brightness = random(min_brightness, max_brightness);
+    strip.setPixelColor(i, strip.Color(rand_brightness, rand_brightness, rand_brightness));
     
     // Break if a new command is sent
     readSerial();
@@ -209,7 +213,7 @@ void twinkle() {
     }
   }
   strip.show();
-  delay(50);
+  delay(100);
 }
 
 // Input a value 0 to 255 to get a color value.
